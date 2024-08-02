@@ -1,9 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { FaInstagram, FaFacebookF, FaTwitter, FaYoutube, FaLinkedinIn } from 'react-icons/fa';
-
 import api from '../services/api';
-
 import '../styles/pages/pag_salas.css';
 import Logo from "../imgs/logo_ccer.png";
 
@@ -21,18 +19,19 @@ interface PaginasSalasProps {
 function Sala() {
     const [sala, setSala] = useState<PaginasSalasProps>();
     const { id } = useParams<{ id: string }>();
+    const [isSpeaking, setIsSpeaking] = useState(false);
 
     // Carregar dados da API
     useEffect(() => {
-        api.get(`salas/${id}`).then(response => { 
+        api.get(`salas/${id}`).then(response => {
             setSala(response.data);
+        }).catch(error => {
+            console.error('Erro ao carregar os dados:', error);
         });
     }, [id]);
 
-    // Ler o texto quando o estado sala for atualizado
-
-    // Leitura automática do texto
-    useEffect(() => {
+    // Função para iniciar a leitura do texto
+    const handleReadText = () => {
         if (sala && sala.sala.texto) {
             console.log('Texto para leitura:', sala.sala.texto);
 
@@ -42,16 +41,23 @@ function Sala() {
                 const voice = new SpeechSynthesisUtterance(sala.sala.texto);
                 
                 voice.onstart = () => console.log('Iniciando leitura');
-                voice.onend = () => console.log('Leitura concluída');
-                voice.onerror = (event) => console.error('Erro na leitura:', event);
+                voice.onend = () => {
+                    console.log('Leitura concluída');
+                    setIsSpeaking(false);
+                };
+                voice.onerror = (event) => {
+                    console.error('Erro na leitura:', event);
+                    setIsSpeaking(false);
+                };
 
                 window.speechSynthesis.speak(voice);
+                setIsSpeaking(true);
             } else {
                 console.error('API de síntese de fala não é suportada neste navegador');
             }
         }
-    }, [sala]);
-    
+    };
+
     if (!sala) {
         return <p>Carregando...</p>;
     }
@@ -77,8 +83,12 @@ function Sala() {
             </div>
             <div className="content">
                 <p>{sala.sala.texto}</p>
+                <button onClick={handleReadText} disabled={isSpeaking}>
+                    {isSpeaking ? 'Lendo...' : 'Ler Texto'}
+                </button>
             </div>
-        </div>  
+            <link rel="icon" href="/path/to/favicon.ico" />
+        </div>
     );
 }
 
