@@ -82,12 +82,11 @@ function Sala() {
                 </div>
             </div>
             <div className="content">
-                <p>{sala.sala.texto}</p>
                 <button onClick={handleReadText} disabled={isSpeaking}>
                     {isSpeaking ? 'Lendo...' : 'Ler Texto'}
                 </button>
+                <p>{sala.sala.texto}</p>
             </div>
-            <link rel="icon" href="/path/to/favicon.ico" />
         </div>
     );
 }
