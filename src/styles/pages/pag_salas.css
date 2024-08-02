@@ -72,30 +72,12 @@
   line-height: 1.6;
 }
 
-/* Estilos gerais do botão */
 button {
-  background-color: #007bff; /* Azul moderno */
-  color: white; /* Texto branco */
   border: none; /* Sem borda */
   border-radius: 8px; /* Bordas arredondadas */
   padding: 10px 20px; /* Espaçamento interno */
-  font-size: 16px; /* Tamanho da fonte */
+  font-size: 2em; /* Tamanho da fonte */
   cursor: pointer; /* Cursor de ponteiro ao passar o mouse */
   transition: background-color 0.3s, transform 0.2s; /* Transição suave */
-  margin: 20px 0; /* Espaçamento acima e abaixo */
-}
-
-button:disabled {
-  background-color: #6c757d; /* Cinza quando desabilitado */
-  cursor: not-allowed; /* Cursor de não permitido */
-}
-
-/* Efeito de foco */
-button:hover {
-  background-color: #0056b3; /* Cor ao passar o mouse */
-  transform: scale(1.05); /* Leve aumento no botão */
-}
-
-button:active {
-  transform: scale(0.95); /* Efeito de pressão */
+  margin: 20px 0 0 0; /* Espaçamento acima e abaixo */
 }
