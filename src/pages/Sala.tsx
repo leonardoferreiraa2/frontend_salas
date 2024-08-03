@@ -34,12 +34,24 @@ function Sala() {
     const handleReadText = () => {
         if (sala && sala.sala.texto) {
             console.log('Texto para leitura:', sala.sala.texto);
-
+    
             if ('speechSynthesis' in window) {
                 console.log('API de síntese de fala está disponível');
-
+    
                 const voice = new SpeechSynthesisUtterance(sala.sala.texto);
-                
+    
+                // Escolhendo uma voz mais humana
+                const availableVoices = window.speechSynthesis.getVoices();
+                const selectedVoice = availableVoices.find(voice => voice.name.includes('Google') && voice.lang === 'pt-BR');
+    
+                if (selectedVoice) {
+                    voice.voice = selectedVoice;
+                    voice.pitch = 1; // Ajustar o tom se necessário (1 é o padrão)
+                    voice.rate = 1; // Ajustar a velocidade se necessário (1 é o padrão)
+                } else {
+                    console.warn('Nenhuma voz específica encontrada, usando voz padrão');
+                }
+    
                 voice.onstart = () => console.log('Iniciando leitura');
                 voice.onend = () => {
                     console.log('Leitura concluída');
@@ -49,7 +61,7 @@ function Sala() {
                     console.error('Erro na leitura:', event);
                     setIsSpeaking(false);
                 };
-
+    
                 window.speechSynthesis.speak(voice);
                 setIsSpeaking(true);
             } else {
@@ -57,7 +69,8 @@ function Sala() {
             }
         }
     };
-
+    
+    
     if (!sala) {
         return <p>Carregando...</p>;
     }
